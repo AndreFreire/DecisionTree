@@ -1,0 +1,14 @@
+ensolarado,quente,alta,fraco,0
+ensolarado,quente,alta,forte,0
+nublado,quente,alta,fraco,1
+chuva,moderada,alta,fraco,1
+chuva,fria,normal,fraco,1
+chuva,fria,normal,forte,0
+nublado,fria,normal,forte,1
+ensolarado,moderada,alta,fraco,0
+ensolarado,fria,normal,fraco,1
+chuva,moderada,normal,fraco,1
+ensolarado,moderada,normal,forte,1
+nublado,moderada,alta,forte,1
+nublado,quente,normal,fraco,1
+chuva,moderada,alta,forte,0

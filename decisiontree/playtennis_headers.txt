@@ -1,0 +1,1 @@
+aparencia,temperatura,umidade,vento,joga_tenis
