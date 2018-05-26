@@ -6,9 +6,9 @@ from decisiontree.utils import read_csv_file
 
 SEPARATOR = '__'
 
-DECISION_INDEX = 4
-JOGA_TENIS = '1'
-NAO_JOGA_TENIS = '0'
+DECISION_INDEX = 14
+POSITIVE_DECISION = '>50K'
+NEGATIVE_DECISION = '<=50K'
 
 def _get_attribute_with_max_information_gain(
         attributtes_information_gain_dict
@@ -45,7 +45,7 @@ def _get_id3_tree_key(selected_attribute, variation):
 
 def train_decision_tree(attributes, lines, entropy, id3_tree={}):
     attributtes_information_gain_dict = calculate_information_gain(
-        attributes, entropy, lines, JOGA_TENIS, DECISION_INDEX
+        attributes, entropy, lines, POSITIVE_DECISION, DECISION_INDEX
     )
     selected_attribute = _get_attribute_with_max_information_gain(
         attributtes_information_gain_dict
@@ -65,7 +65,7 @@ def train_decision_tree(attributes, lines, entropy, id3_tree={}):
         variations_lines_dict[line[attribute_index]].append(line)
     for attribute_variation, variations_lines in variations_lines_dict.items():
         variation_entropy = calculate_total_entropy(
-            variations_lines, JOGA_TENIS, NAO_JOGA_TENIS, DECISION_INDEX
+            variations_lines, POSITIVE_DECISION, NEGATIVE_DECISION, DECISION_INDEX
         )
         id3_tree_key = _get_id3_tree_key(
             selected_attribute, attribute_variation
@@ -89,15 +89,13 @@ def save_json_to_file(id3_tree, file_path):
         id3_file_path.write(json.dumps(id3_tree))
 
 
-if __name__ == '__main__':
-    training = len(sys.argv) > 1 and sys.argv[1].lower() == 'true'
-
-    headers = read_csv_file('playtennis_headers.txt')[0]
-    play_tennis_file_data = read_csv_file('play_tennis.txt')
-
+def run(training, input_file_headers, input_file_data):
+    headers = read_csv_file(input_file_headers)[0]
+    play_tennis_file_data = read_csv_file(input_file_data)
     if training:
         total_entropy_play_tennis = calculate_total_entropy(
-            play_tennis_file_data, JOGA_TENIS, NAO_JOGA_TENIS, DECISION_INDEX
+            play_tennis_file_data, POSITIVE_DECISION, NEGATIVE_DECISION,
+            DECISION_INDEX
         )
         id3_tree = train_decision_tree(
             headers, play_tennis_file_data, total_entropy_play_tennis
@@ -105,3 +103,12 @@ if __name__ == '__main__':
         save_json_to_file(id3_tree, 'id3_tree.json')
     else:
         pass
+
+
+if __name__ == '__main__':
+    if not len(sys.argv) > 2:
+        print('Please provide the headers and data file path.')
+    input_file_headers_param = sys.argv[1]
+    input_file_data_param = sys.argv[2]
+    training_param = len(sys.argv) > 3 and sys.argv[3].lower() == 'true'
+    run(training_param, input_file_headers_param, input_file_data_param)
