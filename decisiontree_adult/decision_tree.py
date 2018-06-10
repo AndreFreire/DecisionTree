@@ -4,6 +4,8 @@ import sys
 from decisiontree.id3_algorithm import calculate_total_entropy, calculate_information_gain
 from decisiontree.utils import read_csv_file
 
+TREE_FILE_NAME = 'id3_tree.json'
+
 SEPARATOR = '__'
 
 DECISION_INDEX = 14
@@ -89,20 +91,49 @@ def save_json_to_file(id3_tree, file_path):
         id3_file_path.write(json.dumps(id3_tree))
 
 
+def read_id3_tree():
+    with open(TREE_FILE_NAME, 'r') as id3_file:
+        return json.loads(id3_file.read())
+
+
+def get_decision_attribute(id3_tree):
+    return list(id3_tree.keys())[0].split(SEPARATOR)[0]
+
+
+def test_data(id3_tree, headers, data):
+    if isinstance(id3_tree, str):
+        return data[DECISION_INDEX] == id3_tree
+    decision_attribute = get_decision_attribute(id3_tree)
+    decision_attribute_index = headers.index(decision_attribute)
+    decision_attribute_value = data[decision_attribute_index]
+    id3_key = decision_attribute + SEPARATOR + decision_attribute_value
+    return test_data(id3_tree[id3_key], headers, data)
+
+
 def run(training, input_file_headers, input_file_data):
     headers = read_csv_file(input_file_headers)[0]
-    play_tennis_file_data = read_csv_file(input_file_data)
+    file_data = read_csv_file(input_file_data)
     if training:
         total_entropy_play_tennis = calculate_total_entropy(
-            play_tennis_file_data, POSITIVE_DECISION, NEGATIVE_DECISION,
+            file_data, POSITIVE_DECISION, NEGATIVE_DECISION,
             DECISION_INDEX
         )
         id3_tree = train_decision_tree(
-            headers, play_tennis_file_data, total_entropy_play_tennis
+            headers, file_data, total_entropy_play_tennis
         )
-        save_json_to_file(id3_tree, 'id3_tree.json')
+        save_json_to_file(id3_tree, TREE_FILE_NAME)
     else:
-        pass
+        id3_tree = read_id3_tree()
+        success = 0
+        errors = 0
+        for line in file_data:
+            tested_data = test_data(id3_tree, headers, line)
+            if tested_data:
+                success += 1
+            else:
+                errors += 1
+        print('Total {} Sucessos {} Erros {}'.format(success+errors, success, errors))
+
 
 
 if __name__ == '__main__':
