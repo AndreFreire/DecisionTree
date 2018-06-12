@@ -1,3 +1,4 @@
+import re
 import json
 import sys
 
@@ -24,14 +25,14 @@ def _get_attribute_with_max_information_gain(
         if information_gain > max_information_gain:
             max_information_gain = information_gain
             attribute_with_max_information_gain = attribute
-    return attribute_with_max_information_gain
+    return attribute_with_max_information_gain, max_information_gain
 
 
 def _update_id3_tree_with_attribute(
-        attribute_variations, selected_attribute, id3_tree
+        attribute_variations, selected_attribute, max_information_gain, id3_tree
 ):
     for variation in attribute_variations:
-        id3_tree_key = _get_id3_tree_key(selected_attribute, variation)
+        id3_tree_key = _get_id3_tree_key(selected_attribute, variation, max_information_gain)
         id3_tree[id3_tree_key] = {}
     return id3_tree
 
@@ -43,8 +44,8 @@ def _get_attribute_variations(attribute_index, lines):
     return attribute_variations
 
 
-def _get_id3_tree_key(selected_attribute, variation):
-    id3_tree_key = selected_attribute + SEPARATOR + variation
+def _get_id3_tree_key(selected_attribute, variation, max_information_gain):
+    id3_tree_key = selected_attribute + SEPARATOR + variation + SEPARATOR + str(max_information_gain)
     return id3_tree_key
 
 
@@ -52,7 +53,7 @@ def train_decision_tree(attributes, lines, entropy, id3_tree={}):
     attributtes_information_gain_dict = calculate_information_gain(
         attributes, entropy, lines, POSITIVE_DECISION, DECISION_INDEX
     )
-    selected_attribute = _get_attribute_with_max_information_gain(
+    selected_attribute, max_information_gain = _get_attribute_with_max_information_gain(
         attributtes_information_gain_dict
     )
 
@@ -62,7 +63,7 @@ def train_decision_tree(attributes, lines, entropy, id3_tree={}):
     attribute_index = attributes.index(selected_attribute)
     attribute_variations = _get_attribute_variations(attribute_index, lines)
     id3_tree = _update_id3_tree_with_attribute(
-        attribute_variations, selected_attribute, id3_tree
+        attribute_variations, selected_attribute, max_information_gain, id3_tree
     )
     variations_lines_dict = _create_variation_dict(attribute_variations)
     while len(lines):
@@ -74,7 +75,7 @@ def train_decision_tree(attributes, lines, entropy, id3_tree={}):
             NEGATIVE_DECISION, DECISION_INDEX
         )
         id3_tree_key = _get_id3_tree_key(
-            selected_attribute, attribute_variation
+            selected_attribute, attribute_variation, max_information_gain
         )
         id3_tree[id3_tree_key] = train_decision_tree(
             attributes, variations_lines,
@@ -104,13 +105,33 @@ def get_decision_attribute(id3_tree):
     return list(id3_tree.keys())[0].split(SEPARATOR)[0]
 
 
+id3_key_regexes = {}
+
+
+def get_id3_key(id3_tree, decision_attribute, decision_attribute_value):
+    dic_regex_key = decision_attribute + SEPARATOR + decision_attribute_value
+    if id3_key_regexes.get(dic_regex_key):
+        key_regex = id3_key_regexes.get(dic_regex_key)
+    else:
+        key_regex = re.compile(dic_regex_key + SEPARATOR + '.*')
+        id3_key_regexes[dic_regex_key] = key_regex
+    keys_list = list(id3_tree.keys())
+    try:
+        return list(filter(key_regex.match, keys_list))[0]
+    except Exception as e:
+        import pdb; pdb.set_trace()
+
+
 def test_data(id3_tree, headers, data):
     if isinstance(id3_tree, str):
         return data[DECISION_INDEX] == id3_tree
     decision_attribute = get_decision_attribute(id3_tree)
     decision_attribute_index = headers.index(decision_attribute)
     decision_attribute_value = data[decision_attribute_index]
-    id3_key = decision_attribute + SEPARATOR + decision_attribute_value
+    id3_key = get_id3_key(
+        id3_tree, decision_attribute,
+        decision_attribute_value
+    )
     return test_data(id3_tree[id3_key], headers, data)
 
 
