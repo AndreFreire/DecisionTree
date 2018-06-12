@@ -4,7 +4,6 @@ POSITIVE_INDEX = 'positive'
 NEGATIVE_INDEX = 'negative'
 
 
-
 def entropy(total, positive, negative):
     value = 0
     if positive:
@@ -14,7 +13,8 @@ def entropy(total, positive, negative):
     return value
 
 
-def calculate_information_gain(attributes, total_entropy, file_data, positive_flag, decision_index):
+def calculate_information_gain(attributes, total_entropy, file_data,
+                               positive_flag, decision_index):
     attribute_index = 0
     attributes_information_gain_dict = dict.fromkeys(attributes, 0)
     total = len(file_data)
@@ -35,7 +35,8 @@ def calculate_information_gain(attributes, total_entropy, file_data, positive_fl
     return attributes_information_gain_dict
 
 
-def calculate_total_entropy(file_data, positive_flag, negative_flag, decision_index):
+def calculate_total_entropy(file_data, positive_flag,
+                            negative_flag, decision_index):
     decision_index_attribute = _get_attribute_samples_count(
         decision_index, file_data, positive_flag, decision_index
     )

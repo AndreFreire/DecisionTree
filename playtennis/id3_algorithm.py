@@ -13,42 +13,26 @@ def entropy(total, positive, negative):
     return value
 
 
-def _init_attributes_information_gain_dict(attributes):
-    attributes_information_gain_dict = {}
-    for attribute in attributes:
-        attributes_information_gain_dict[attribute] = {
-            'value': 0,
-            POSITIVE_INDEX: 0,
-            NEGATIVE_INDEX: 0
-        }
-    return attributes_information_gain_dict
-
-
 def calculate_information_gain(
         attributes, total_entropy, file_data,
         positive_flag, decision_index
 ):
     attribute_index = 0
-    attributes_information_gain_dict = _init_attributes_information_gain_dict(attributes)
+    attributes_information_gain_dict = dict.fromkeys(attributes, 0)
     total = len(file_data)
     while attribute_index < decision_index:
         attribute_data = _get_attribute_samples_count(
             attribute_index, file_data, positive_flag, decision_index
         )
         value = total_entropy
-        positives_count, negatives_count = 0, 0
         for attribute in attribute_data:
             negative = attribute_data[attribute][NEGATIVE_INDEX]
-            negatives_count += negative
             positive = attribute_data[attribute][POSITIVE_INDEX]
-            positives_count += positive
             attribute_total = positive + negative
             value -= (attribute_total/total) * entropy(
                 attribute_total, positive, negative
             )
-        attributes_information_gain_dict[attributes[attribute_index]]['value'] = value
-        attributes_information_gain_dict[attributes[attribute_index]][POSITIVE_INDEX] = positives_count
-        attributes_information_gain_dict[attributes[attribute_index]][NEGATIVE_INDEX] = negatives_count
+        attributes_information_gain_dict[attributes[attribute_index]] = value
         attribute_index += 1
     return attributes_information_gain_dict
 

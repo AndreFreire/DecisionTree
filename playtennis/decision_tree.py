@@ -1,8 +1,8 @@
 import json
 import sys
 
-from decisiontree.id3_algorithm import calculate_total_entropy, calculate_information_gain
-from decisiontree.utils import read_csv_file
+from id3_algorithm import calculate_total_entropy, calculate_information_gain
+from utils import read_csv_file
 
 SEPARATOR = '__'
 

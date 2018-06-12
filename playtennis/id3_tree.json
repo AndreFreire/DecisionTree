@@ -1,1 +1,1 @@
-{"aparencia__ensolarado": {"umidade__alta": "0", "umidade__normal": "1"}, "aparencia__nublado": "1", "aparencia__chuva": {"vento__forte": "0", "vento__fraco": "1"}}
+{"aparencia__nublado": "1", "aparencia__ensolarado": {"umidade__normal": "1", "umidade__alta": "0"}, "aparencia__chuva": {"vento__forte": "0", "vento__fraco": "1"}}

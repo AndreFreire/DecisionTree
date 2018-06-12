@@ -1,8 +1,8 @@
 export PYTHONPATH=$(PWD)/..
 
 clean:
-	rm adult_new.data
-	rm id3_tree.json
+	rm -f adult_new.data
+	rm -f id3_tree.json
 
 clean_test:
 	rm adult_new.test
