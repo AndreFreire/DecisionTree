@@ -1,4 +1,8 @@
 export PYTHONPATH=$(PWD)/..
+TRAINING_FILE_RAW := adult.complete
+TRAINING_FILE_PROCESSED := adult_new.complete
+TEST_FILE_PROCESSED := adult.test
+HEADERS_FILE := adult_headers.txt
 
 clean:
 	rm -f adult_new.complete
@@ -13,30 +17,28 @@ clean_validate:
 	rm -f adult.data
 
 prepare_data:
-	python3 prepare_id3_data.py adult.complete adult_new.complete ?
+	python3 prepare_id3_data.py $(TRAINING_FILE_RAW) $(TRAINING_FILE_PROCESSED) ?
 
 train:
-	python3 decision_tree.py adult_headers.txt adult.data training 0 0 
+	python3 decision_tree.py $(HEADERS_FILE) adult.data training 0 0
 
 validate:
-	python3 decision_tree.py adult_headers.txt adult_new.complete validation 10 0
+	python3 decision_tree.py $(HEADERS_FILE) $(TRAINING_FILE_PROCESSED) validation 10 0
 
 test:
-	python3 decision_tree.py adult_headers.txt adult.data test 0 0
+	python3 decision_tree.py $(HEADERS_FILE) $(TEST_FILE_PROCESSED) test 0 0
 
 prune:
-	python3 decision_tree.py adult_headers.txt adult.data prune 0 adult.test 
+	python3 decision_tree.py $(HEADERS_FILE) adult.data prune 0 $(TEST_FILE_PROCESSED)
 
 
 divide_prepare_file: prepare_data
-	./divide_file.sh adult_new.complete adult.data adult.test
+	./divide_file.sh $(TRAINING_FILE_PROCESSED) adult.data adult.test
 
-#run_training_complete: clean divide_prepare_file train
+run_training_complete: clean divide_prepare_file train
 
-run_training_complete: train
+run_valid_fold_complete: run_training_complete validate
 
-run_valid_fold_complete: divide_prepare_file validate
-
-run_test_complete: divide_prepare_file test
+run_test_complete: test
 
 run_training_prune_complete: prune

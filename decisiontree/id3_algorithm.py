@@ -16,11 +16,7 @@ def entropy(total, positive, negative):
 def _init_attributes_information_gain_dict(attributes):
     attributes_information_gain_dict = {}
     for attribute in attributes:
-        attributes_information_gain_dict[attribute] = {
-            'value': 0,
-            POSITIVE_INDEX: 0,
-            NEGATIVE_INDEX: 0
-        }
+        attributes_information_gain_dict[attribute] = 0
     return attributes_information_gain_dict
 
 
@@ -46,9 +42,7 @@ def calculate_information_gain(
             value -= (attribute_total/total) * entropy(
                 attribute_total, positive, negative
             )
-        attributes_information_gain_dict[attributes[attribute_index]]['value'] = value
-        attributes_information_gain_dict[attributes[attribute_index]][POSITIVE_INDEX] = positives_count
-        attributes_information_gain_dict[attributes[attribute_index]][NEGATIVE_INDEX] = negatives_count
+        attributes_information_gain_dict[attributes[attribute_index]] = value
         attribute_index += 1
     return attributes_information_gain_dict
 

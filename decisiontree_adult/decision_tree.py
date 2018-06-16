@@ -23,23 +23,18 @@ def _get_attribute_with_max_information_gain(
 ):
     max_information_gain = 0
     attribute_with_max_information_gain = None
-    max_positives = 0
-    max_negatives = 0
-    for attribute, information_gain_dict in attributtes_information_gain_dict.items():  # noqa
-        information_gain = information_gain_dict['value']
+    for attribute, information_gain in attributtes_information_gain_dict.items():  # noqa
         if information_gain > max_information_gain:
             max_information_gain = information_gain
-            max_positives = information_gain_dict['positive']
-            max_negatives = information_gain_dict['negative']
             attribute_with_max_information_gain = attribute
-    return attribute_with_max_information_gain, max_information_gain, max_positives, max_negatives
+    return attribute_with_max_information_gain, max_information_gain
 
 
 def _update_id3_tree_with_attribute(
-        attribute_variations, selected_attribute, max_positives, max_negatives, id3_tree
+        attribute_variations, selected_attribute, id3_tree
 ):
     for variation in attribute_variations:
-        id3_tree_key = _get_id3_tree_key(selected_attribute, variation, max_positives, max_negatives)
+        id3_tree_key = _get_id3_tree_key(selected_attribute, variation)
         id3_tree[id3_tree_key] = {}
     return id3_tree
 
@@ -51,8 +46,8 @@ def _get_attribute_variations(attribute_index, lines):
     return attribute_variations
 
 
-def _get_id3_tree_key(selected_attribute, variation, max_positives, max_negatives):
-    id3_tree_key = selected_attribute + SEPARATOR + variation + SEPARATOR + str(max_positives) + SEPARATOR + str(max_negatives)
+def _get_id3_tree_key(selected_attribute, variation):
+    id3_tree_key = selected_attribute + SEPARATOR + variation
     return id3_tree_key
 
 
@@ -60,7 +55,7 @@ def train_decision_tree(attributes, lines, entropy, id3_tree={}):
     attributtes_information_gain_dict = calculate_information_gain(
         attributes, entropy, lines, POSITIVE_DECISION, DECISION_INDEX
     )
-    selected_attribute, max_information_gain, max_positives, max_negatives = _get_attribute_with_max_information_gain(
+    selected_attribute, max_information_gain = _get_attribute_with_max_information_gain(
         attributtes_information_gain_dict
     )
 
@@ -70,7 +65,7 @@ def train_decision_tree(attributes, lines, entropy, id3_tree={}):
     attribute_index = attributes.index(selected_attribute)
     attribute_variations = _get_attribute_variations(attribute_index, lines)
     id3_tree = _update_id3_tree_with_attribute(
-        attribute_variations, selected_attribute, max_positives, max_negatives, id3_tree
+        attribute_variations, selected_attribute, id3_tree
     )
     variations_lines_dict = _create_variation_dict(attribute_variations)
     while len(lines):
@@ -82,7 +77,7 @@ def train_decision_tree(attributes, lines, entropy, id3_tree={}):
             NEGATIVE_DECISION, DECISION_INDEX
         )
         id3_tree_key = _get_id3_tree_key(
-            selected_attribute, attribute_variation, max_positives, max_negatives
+            selected_attribute, attribute_variation
         )
         id3_tree[id3_tree_key] = train_decision_tree(
             attributes, variations_lines,
@@ -116,17 +111,10 @@ id3_key_regexes = {}
 
 
 def get_id3_key(id3_tree, decision_attribute, decision_attribute_value):
-    dic_regex_key = decision_attribute + SEPARATOR + decision_attribute_value
-    if id3_key_regexes.get(dic_regex_key):
-        key_regex = id3_key_regexes.get(dic_regex_key)
-    else:
-        dic_regex_key = re.escape(dic_regex_key)
-        key_regex = re.compile(dic_regex_key + '.*')
-        id3_key_regexes[dic_regex_key] = key_regex
+    key = decision_attribute + SEPARATOR + decision_attribute_value
     keys_list = list(id3_tree.keys())
-    key = list(filter(key_regex.match, keys_list))
-    if key:
-        return key[0]
+    if key in keys_list:
+        return key
     else:
         print('Key not found for {} and {}'.format(
             decision_attribute, decision_attribute_value
