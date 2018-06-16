@@ -6,6 +6,7 @@ from decisiontree.utils import read_csv_file
 DIGIT_REGEX = '^\d+'
 digit_regex_compiled = re.compile(DIGIT_REGEX)
 
+
 def _has_exclude_flag(line, exclude_flag):
     for attribute in line:
         if attribute == exclude_flag:
@@ -77,4 +78,3 @@ if __name__ == '__main__':
     unknown_flag = sys.argv[3]
 
     run(input_file_path, output_file_path, unknown_flag)
-

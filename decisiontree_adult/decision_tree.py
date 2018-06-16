@@ -2,12 +2,14 @@ import re
 import json
 import sys
 
+from copy import copy
 from decisiontree.id3_algorithm import (calculate_total_entropy,
                                         calculate_information_gain)
 from decisiontree.utils import read_csv_file
 from random import randint
 
 TREE_FILE_NAME = 'id3_tree.json'
+TREE_PRUNED_FILE_NAME = 'id3_pruned_tree.json'
 
 SEPARATOR = '__'
 
@@ -122,7 +124,14 @@ def get_id3_key(id3_tree, decision_attribute, decision_attribute_value):
         key_regex = re.compile(dic_regex_key + '.*')
         id3_key_regexes[dic_regex_key] = key_regex
     keys_list = list(id3_tree.keys())
-    return list(filter(key_regex.match, keys_list))[0]
+    key = list(filter(key_regex.match, keys_list))
+    if key:
+        return key[0]
+    else:
+        print('Key not found for {} and {}'.format(
+            decision_attribute, decision_attribute_value
+        ))
+        return None
 
 
 def test_data(id3_tree, headers, data):
@@ -131,10 +140,13 @@ def test_data(id3_tree, headers, data):
     decision_attribute = get_decision_attribute(id3_tree)
     decision_attribute_index = headers.index(decision_attribute)
     decision_attribute_value = data[decision_attribute_index]
+
     id3_key = get_id3_key(
         id3_tree, decision_attribute,
         decision_attribute_value
     )
+    if id3_key is None:
+        return False
     return test_data(id3_tree[id3_key], headers, data)
 
 
@@ -150,7 +162,44 @@ def separate_folds(file_data, fold_number):
     return folds
 
 
-def run(action, input_file_headers, input_file_data, fold_number):
+def calculate_accuracy(id3_tree, file_data, headers):
+    success = 0
+    errors = 0
+    for line in file_data:
+        tested_data = test_data(id3_tree, headers, line)
+        if tested_data:
+            success += 1
+        else:
+            errors += 1
+    print(success)
+    return success / (success + errors)
+
+
+def prune_tree(id3_tree, id3_tree_part, file_data, headers):
+    for key, value in id3_tree_part.items():
+        print(key)
+        if value not in [NEGATIVE_DECISION, POSITIVE_DECISION]:
+            old_accuracy = calculate_accuracy(id3_tree, file_data, headers)
+            positives = int(key.split(SEPARATOR)[2])
+            negatives = int(key.split(SEPARATOR)[3])
+            if positives > negatives:
+                new_leaf = POSITIVE_DECISION
+            else:
+                new_leaf = NEGATIVE_DECISION
+
+            branch_aux = copy(value)
+            id3_tree_part[key] = new_leaf
+            new_accuracy = calculate_accuracy(id3_tree, file_data, headers)
+            if old_accuracy > new_accuracy:
+                id3_tree_part[key] = branch_aux
+            prune_tree(id3_tree, value, file_data, headers)
+    return id3_tree
+
+
+def run(
+    action, input_file_headers, input_file_data,
+    fold_number, input_file_test
+):
     headers = read_csv_file(input_file_headers)[0]
     file_data = read_csv_file(input_file_data)
     if action == 'training':
@@ -202,11 +251,18 @@ def run(action, input_file_headers, input_file_data, fold_number):
 
             folds.insert(i, fold_aux)
 
+    if action == 'prune':
+        total_entropy_play_tennis = calculate_total_entropy(
+            file_data, POSITIVE_DECISION, NEGATIVE_DECISION,
+            DECISION_INDEX
+        )
+        id3_tree = train_decision_tree(
+            headers, file_data, total_entropy_play_tennis
+        )
+        file_data = read_csv_file(input_file_test)
+        id3_pruned_tree = prune_tree(id3_tree, id3_tree, file_data, headers)
+        save_json_to_file(id3_pruned_tree, TREE_PRUNED_FILE_NAME)
 
-def _increase_recursion_limit():
-    import resource, sys
-    #resource.setrlimit(resource.RLIMIT_STACK, (resource.RLIM_INFINITY, resource.RLIM_INFINITY))
-    sys.setrecursionlimit(10000)
 
 if __name__ == '__main__':
     if not len(sys.argv) > 2:
@@ -214,7 +270,8 @@ if __name__ == '__main__':
     input_file_headers_param = sys.argv[1]
     input_file_data_param = sys.argv[2]
     fold_number = int(sys.argv[4])
+    input_file_test = sys.argv[5]
     action = sys.argv[3]
-    _increase_recursion_limit()
     run(action, input_file_headers_param,
-        input_file_data_param, fold_number)
+        input_file_data_param, fold_number,
+        input_file_test)
