@@ -202,6 +202,12 @@ def run(action, input_file_headers, input_file_data, fold_number):
 
             folds.insert(i, fold_aux)
 
+
+def _increase_recursion_limit():
+    import resource, sys
+    #resource.setrlimit(resource.RLIMIT_STACK, (resource.RLIM_INFINITY, resource.RLIM_INFINITY))
+    sys.setrecursionlimit(10000)
+
 if __name__ == '__main__':
     if not len(sys.argv) > 2:
         print('Please provide the headers and data file path.')
@@ -209,5 +215,6 @@ if __name__ == '__main__':
     input_file_data_param = sys.argv[2]
     fold_number = int(sys.argv[4])
     action = sys.argv[3]
+    _increase_recursion_limit()
     run(action, input_file_headers_param,
         input_file_data_param, fold_number)
