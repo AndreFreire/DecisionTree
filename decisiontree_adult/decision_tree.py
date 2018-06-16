@@ -221,8 +221,8 @@ def run(
 
             training_fold = []
 
-            for j in fold_aux:
-                training_fold.append(j)
+            for j in folds:
+                training_fold = training_fold + j
 
             total_entropy_adult = calculate_total_entropy(
                 training_fold, POSITIVE_DECISION, NEGATIVE_DECISION,
