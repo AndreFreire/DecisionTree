@@ -203,12 +203,12 @@ def run(
     headers = read_csv_file(input_file_headers)[0]
     file_data = read_csv_file(input_file_data)
     if action == 'training':
-        total_entropy_play_tennis = calculate_total_entropy(
+        total_entropy_adult = calculate_total_entropy(
             file_data, POSITIVE_DECISION, NEGATIVE_DECISION,
             DECISION_INDEX
         )
         id3_tree = train_decision_tree(
-            headers, file_data, total_entropy_play_tennis
+            headers, file_data, total_entropy_adult
         )
         save_json_to_file(id3_tree, TREE_FILE_NAME)
 
@@ -236,7 +236,14 @@ def run(
             for j in fold_aux:
                 training_fold.append(j)
 
-            id3_tree = read_id3_tree()
+            total_entropy_adult = calculate_total_entropy(
+                training_fold, POSITIVE_DECISION, NEGATIVE_DECISION,
+                DECISION_INDEX
+            )
+            id3_tree = train_decision_tree(
+                headers, training_fold, total_entropy_adult
+            )
+
             success = 0
             errors = 0
             for line in fold_aux:
@@ -252,12 +259,12 @@ def run(
             folds.insert(i, fold_aux)
 
     if action == 'prune':
-        total_entropy_play_tennis = calculate_total_entropy(
+        total_entropy_adult = calculate_total_entropy(
             file_data, POSITIVE_DECISION, NEGATIVE_DECISION,
             DECISION_INDEX
         )
         id3_tree = train_decision_tree(
-            headers, file_data, total_entropy_play_tennis
+            headers, file_data, total_entropy_adult
         )
         file_data = read_csv_file(input_file_test)
         id3_pruned_tree = prune_tree(id3_tree, id3_tree, file_data, headers)
