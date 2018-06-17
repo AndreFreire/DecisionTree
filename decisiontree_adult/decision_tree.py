@@ -1,4 +1,3 @@
-import re
 import json
 import sys
 
@@ -116,9 +115,9 @@ def get_id3_key(id3_tree, decision_attribute, decision_attribute_value):
     if key in keys_list:
         return key
     else:
-        print('Key not found for {} and {}'.format(
-            decision_attribute, decision_attribute_value
-        ))
+        #print('Key not found for {} and {}'.format(
+        #    decision_attribute, decision_attribute_value
+        #))
         return None
 
 
@@ -159,27 +158,34 @@ def calculate_accuracy(id3_tree, file_data, headers):
             success += 1
         else:
             errors += 1
-    print(success)
+
     return success / (success + errors)
 
 
 def prune_tree(id3_tree, id3_tree_part, file_data, headers):
     for key, value in id3_tree_part.items():
-        print(key)
         if value not in [NEGATIVE_DECISION, POSITIVE_DECISION]:
             old_accuracy = calculate_accuracy(id3_tree, file_data, headers)
-            positives = int(key.split(SEPARATOR)[2])
-            negatives = int(key.split(SEPARATOR)[3])
-            if positives > negatives:
-                new_leaf = POSITIVE_DECISION
-            else:
-                new_leaf = NEGATIVE_DECISION
-
             branch_aux = copy(value)
-            id3_tree_part[key] = new_leaf
-            new_accuracy = calculate_accuracy(id3_tree, file_data, headers)
-            if old_accuracy > new_accuracy:
+
+            id3_tree_part[key] = POSITIVE_DECISION
+            positive_accuracy = calculate_accuracy(
+                id3_tree, file_data, headers
+            )
+
+            id3_tree_part[key] = NEGATIVE_DECISION
+            negative_accuracy = calculate_accuracy(
+                id3_tree, file_data, headers
+            )
+
+            if (old_accuracy >= negative_accuracy
+               and old_accuracy >= positive_accuracy):
                 id3_tree_part[key] = branch_aux
+            elif positive_accuracy > negative_accuracy:
+                id3_tree_part[key] = POSITIVE_DECISION
+            else:
+                id3_tree_part[key] = NEGATIVE_DECISION
+
             prune_tree(id3_tree, value, file_data, headers)
     return id3_tree
 
