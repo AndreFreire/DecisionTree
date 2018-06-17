@@ -31,6 +31,9 @@ test:
 prune:
 	python3 decision_tree.py $(HEADERS_FILE) adult.data prune 0 $(TEST_FILE_PROCESSED)
 
+ifthen:
+	python3 decision_tree.py $(HEADERS_FILE) adult.data ifthen 0 $(TEST_FILE_PROCESSED)
+
 
 divide_prepare_file: prepare_data
 	./divide_file.sh $(TRAINING_FILE_PROCESSED) adult.data adult.test

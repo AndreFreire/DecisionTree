@@ -18,6 +18,8 @@ SEPARATOR = '__'
 DECISION_INDEX = 14
 POSITIVE_DECISION = '>50K'
 NEGATIVE_DECISION = '<=50K'
+TABS_PER_LINE = 4
+IFTHEN_FILE_PATH = 'ifthen.txt'
 WORKER = multiprocessing.cpu_count() * 2
 
 global id3_tree_global
@@ -189,6 +191,58 @@ def prune_tree(id3_tree, id3_tree_part, file_data, headers):
     return id3_tree
 
 
+def _get_key_with_most_accuracy(accuracy_dict):
+    max_accuracy = None
+    max_accuracy_key = None
+    for tree_key, tree_accuracy in accuracy_dict.items():
+        if max_accuracy is None or tree_accuracy > max_accuracy:
+            max_accuracy = tree_accuracy
+            max_accuracy_key = tree_key
+    return max_accuracy_key
+
+
+def _create_if_then_tree_key(tree_key, then_nodes=False):
+    if then_nodes:
+        return 'THEN {}\n'.format(tree_key)
+    return 'IF {} == {}\n'.format(*tree_key.split(SEPARATOR))
+
+
+def _get_lines_that_match_key(headers, tree_key, file_data):
+    key, value = tree_key.split(SEPARATOR)
+    attribute_index = headers.index(key)
+    subtree_data = []
+    for line in file_data:
+        if line[attribute_index] == value:
+            subtree_data.append(line)
+    return subtree_data
+
+
+def convert_to_if_then(id3_tree, file_data, headers, tabs_prefix=0):
+    tabs_before = ' ' * TABS_PER_LINE * tabs_prefix
+    if isinstance(id3_tree, str):
+        return tabs_before + _create_if_then_tree_key(id3_tree, then_nodes=True)
+    if_then = ''
+    keys_list = list(id3_tree.keys())
+    accuracy_dict = {}
+    for key in keys_list:
+        accuracy = calculate_accuracy(id3_tree[key], file_data, headers)
+        accuracy_dict[key] = accuracy
+    while accuracy_dict:
+        tree_key = _get_key_with_most_accuracy(accuracy_dict)
+        del accuracy_dict[tree_key]
+        if_then += tabs_before + _create_if_then_tree_key(tree_key)
+        subtree_data = _get_lines_that_match_key(headers, tree_key, file_data)
+        subif = convert_to_if_then(
+            id3_tree[tree_key], subtree_data, headers, tabs_prefix=tabs_prefix + 1
+        )
+        if_then += subif
+    return if_then
+
+
+def save_ifthen_to_file(ifthen):
+    with open(IFTHEN_FILE_PATH, 'w') as ifthen_file_path:
+        ifthen_file_path.write(ifthen)
+
 def run(
     action, input_file_headers, input_file_data,
     fold_number, input_file_test
@@ -243,6 +297,10 @@ def run(
 
             folds.insert(i, fold_aux)
 
+    if action == 'ifthen':
+        id3_tree = read_id3_tree()
+        ifthen = convert_to_if_then(id3_tree, file_data, headers)
+        save_ifthen_to_file(ifthen)
     if action == 'prune':
         total_entropy_adult = calculate_total_entropy(
             file_data, POSITIVE_DECISION, NEGATIVE_DECISION,
@@ -276,6 +334,7 @@ def validate_fold(fold_aux, headers, id3_tree):
             else:
                 errors += 1
     return errors, success
+
 
 
 if __name__ == '__main__':
