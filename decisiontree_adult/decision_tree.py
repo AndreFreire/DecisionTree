@@ -2,6 +2,7 @@
 import multiprocessing
 import json
 import sys
+import sys
 
 from concurrent.futures import ThreadPoolExecutor
 from copy import copy
@@ -350,6 +351,7 @@ def run(
 if __name__ == '__main__':
     if not len(sys.argv) > 2:
         print('Please provide the headers and data file path.')
+    sys.setrecursionlimit(10000000)
     input_file_headers_param = sys.argv[1]
     input_file_data_param = sys.argv[2]
     fold_number = int(sys.argv[4])
