@@ -19,6 +19,7 @@ POSITIVE_DECISION = '>50K'
 NEGATIVE_DECISION = '<=50K'
 TABS_PER_LINE = 4
 IFTHEN_FILE_PATH = 'ifthen.txt'
+IFTHEN_PRUNE_FILE_PATH = 'ifthen-prune.txt'
 WORKER = multiprocessing.cpu_count() * 2
 
 global id3_tree_global
@@ -174,6 +175,15 @@ def calculate_accuracy(id3_tree, file_data, headers):
     return success / (success + errors)
 
 
+def count_nodes(id3_tree):
+    keys = 0
+    keys += len(id3_tree.keys())
+    for key in id3_tree.keys():
+        if isinstance(id3_tree[key], dict):
+            keys += count_nodes(id3_tree[key])
+    return keys
+
+
 def prune_tree(id3_tree, id3_tree_part, file_data_test, headers, file_data):
     for key, value in id3_tree_part.items():
         if value not in [NEGATIVE_DECISION, POSITIVE_DECISION]:
@@ -200,12 +210,13 @@ def prune_tree(id3_tree, id3_tree_part, file_data_test, headers, file_data):
                 new_accuracy = calculate_accuracy(
                     id3_tree, file_data, headers
                 )
-                print('accuracy train: {} - accuracy test: {}'.format(
+                print('accuracy train: {} - accuracy test: {} - size {} nodes'
+                      .format(
                         new_accuracy, max(
                             positive_accuracy, negative_accuracy
-                        )
-                    )
-                )
+                        ), count_nodes(id3_tree)
+                       ))
+
                 if positive_accuracy > negative_accuracy:
                     id3_tree_part[key] = POSITIVE_DECISION
                 else:
@@ -265,8 +276,8 @@ def convert_to_if_then(id3_tree, file_data, headers, tabs_prefix=0):
     return if_then
 
 
-def save_ifthen_to_file(ifthen):
-    with open(IFTHEN_FILE_PATH, 'w') as ifthen_file_path:
+def save_ifthen_to_file(ifthen, path):
+    with open(path, 'w') as ifthen_file_path:
         ifthen_file_path.write(ifthen)
 
 
@@ -279,9 +290,10 @@ def print_accuracy(id3_tree, headers, file_data):
             success += 1
         else:
             errors += 1
-    print('Total {} Sucessos {} Erros {} Accuracy {}'.format(
+    print('Total {} Sucessos {} Erros {} Accuracy {} Size {} nodes'.format(
         success+errors, success, errors,
-        calculate_accuracy(id3_tree, file_data, headers)
+        calculate_accuracy(id3_tree, file_data, headers),
+        count_nodes(id3_tree)
     ))
 
 
@@ -331,9 +343,15 @@ def run(
             folds.insert(i, fold_aux)
 
     if action == 'ifthen':
+        id3_tree = read_id3_tree_pruned()
+        ifthen = convert_to_if_then(id3_tree, file_data, headers)
+        save_ifthen_to_file(ifthen, IFTHEN_FILE_PATH)
+
+    if action == 'ifthen-prune':
         id3_tree = read_id3_tree()
         ifthen = convert_to_if_then(id3_tree, file_data, headers)
-        save_ifthen_to_file(ifthen)
+        save_ifthen_to_file(ifthen, IFTHEN_PRUNE_FILE_PATH)
+
 
     if action == 'prune':
         total_entropy_adult = calculate_total_entropy(

@@ -1,0 +1,7 @@
+rm -f adult_new.complete
+rm -f adult.data
+rm -f adult.test
+rm -f id3_tree.json
+python3 prepare_id3_data.py adult.complete adult_new.complete ?
+./divide_file.sh adult_new.complete adult.data adult.test adult.validation
+python3 decision_tree.py adult_headers.txt adult.data training 0 0

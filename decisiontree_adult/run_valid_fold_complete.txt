@@ -1,0 +1,16 @@
+rm -f adult_new.complete
+rm -f adult.data
+rm -f adult.test
+rm -f id3_tree.json
+python3 prepare_id3_data.py adult.complete adult_new.complete ?
+python3 decision_tree.py adult_headers.txt adult_new.complete validation 10 0
+Total 3017 Sucessos 2306 Erros 711 Accuracy 0.7643354325488896 Size 9287 nodes
+Total 3017 Sucessos 2236 Erros 781 Accuracy 0.7411335764003978 Size 9230 nodes
+Total 3016 Sucessos 2284 Erros 732 Accuracy 0.7572944297082228 Size 9263 nodes
+Total 3016 Sucessos 2303 Erros 713 Accuracy 0.7635941644562334 Size 9285 nodes
+Total 3016 Sucessos 2259 Erros 757 Accuracy 0.7490053050397878 Size 9365 nodes
+Total 3016 Sucessos 2247 Erros 769 Accuracy 0.745026525198939 Size 9265 nodes
+Total 3016 Sucessos 2307 Erros 709 Accuracy 0.764920424403183 Size 9309 nodes
+Total 3016 Sucessos 2240 Erros 776 Accuracy 0.7427055702917772 Size 9248 nodes
+Total 3016 Sucessos 2270 Erros 746 Accuracy 0.7526525198938993 Size 9350 nodes
+Total 3016 Sucessos 2265 Erros 751 Accuracy 0.7509946949602122 Size 9301 nodes
