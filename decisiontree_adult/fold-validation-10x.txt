@@ -1,0 +1,161 @@
+make run_valid_fold_complete
+rm -f adult_new.complete
+rm -f adult.data
+rm -f adult.test
+rm -f id3_tree.json
+python3 prepare_id3_data.py adult.complete adult_new.complete ?
+python3 decision_tree.py adult_headers.txt adult_new.complete validation 10 0 0
+Total 3017 Sucessos 2220 Erros 797 Accuracy 0.7358302949950282 Size 9169 nodes
+Total 3017 Sucessos 2305 Erros 712 Accuracy 0.764003977461054 Size 9300 nodes
+Total 3016 Sucessos 2258 Erros 758 Accuracy 0.7486737400530504 Size 9225 nodes
+Total 3016 Sucessos 2300 Erros 716 Accuracy 0.7625994694960212 Size 9383 nodes
+Total 3016 Sucessos 2326 Erros 690 Accuracy 0.7712201591511937 Size 9409 nodes
+Total 3016 Sucessos 2284 Erros 732 Accuracy 0.7572944297082228 Size 9356 nodes
+Total 3016 Sucessos 2271 Erros 745 Accuracy 0.7529840848806366 Size 9339 nodes
+Total 3016 Sucessos 2306 Erros 710 Accuracy 0.7645888594164456 Size 9330 nodes
+Total 3016 Sucessos 2319 Erros 697 Accuracy 0.7688992042440318 Size 9376 nodes
+Total 3016 Sucessos 2316 Erros 700 Accuracy 0.7679045092838196 Size 9301 nodes
+rm -f adult_new.complete
+rm -f adult.data
+rm -f adult.test
+rm -f id3_tree.json
+python3 prepare_id3_data.py adult.complete adult_new.complete ?
+python3 decision_tree.py adult_headers.txt adult_new.complete validation 10 0 0
+Total 3017 Sucessos 2267 Erros 750 Accuracy 0.7514086841233013 Size 9254 nodes
+Total 3017 Sucessos 2254 Erros 763 Accuracy 0.7470997679814385 Size 9348 nodes
+Total 3016 Sucessos 2297 Erros 719 Accuracy 0.761604774535809 Size 9285 nodes
+Total 3016 Sucessos 2281 Erros 735 Accuracy 0.7562997347480106 Size 9333 nodes
+Total 3016 Sucessos 2274 Erros 742 Accuracy 0.7539787798408488 Size 9302 nodes
+Total 3016 Sucessos 2272 Erros 744 Accuracy 0.753315649867374 Size 9342 nodes
+Total 3016 Sucessos 2249 Erros 767 Accuracy 0.7456896551724138 Size 9229 nodes
+Total 3016 Sucessos 2248 Erros 768 Accuracy 0.7453580901856764 Size 9322 nodes
+Total 3016 Sucessos 2171 Erros 845 Accuracy 0.7198275862068966 Size 9299 nodes
+Total 3016 Sucessos 2296 Erros 720 Accuracy 0.7612732095490716 Size 9289 nodes
+rm -f adult_new.complete
+rm -f adult.data
+rm -f adult.test
+rm -f id3_tree.json
+python3 prepare_id3_data.py adult.complete adult_new.complete ?
+python3 decision_tree.py adult_headers.txt adult_new.complete validation 10 0 0
+Total 3017 Sucessos 2256 Erros 761 Accuracy 0.7477626781571097 Size 9252 nodes
+Total 3017 Sucessos 2312 Erros 705 Accuracy 0.7663241630759032 Size 9344 nodes
+Total 3016 Sucessos 2276 Erros 740 Accuracy 0.7546419098143236 Size 9223 nodes
+Total 3016 Sucessos 2300 Erros 716 Accuracy 0.7625994694960212 Size 9331 nodes
+Total 3016 Sucessos 2260 Erros 756 Accuracy 0.7493368700265252 Size 9340 nodes
+Total 3016 Sucessos 2268 Erros 748 Accuracy 0.7519893899204244 Size 9273 nodes
+Total 3016 Sucessos 2264 Erros 752 Accuracy 0.7506631299734748 Size 9244 nodes
+Total 3016 Sucessos 2291 Erros 725 Accuracy 0.7596153846153846 Size 9298 nodes
+Total 3016 Sucessos 2275 Erros 741 Accuracy 0.7543103448275862 Size 9264 nodes
+Total 3016 Sucessos 2293 Erros 723 Accuracy 0.7602785145888594 Size 9310 nodes
+rm -f adult_new.complete
+rm -f adult.data
+rm -f adult.test
+rm -f id3_tree.json
+python3 prepare_id3_data.py adult.complete adult_new.complete ?
+python3 decision_tree.py adult_headers.txt adult_new.complete validation 10 0 0
+Total 3017 Sucessos 2263 Erros 754 Accuracy 0.7500828637719589 Size 9319 nodes
+Total 3017 Sucessos 2263 Erros 754 Accuracy 0.7500828637719589 Size 9469 nodes
+Total 3016 Sucessos 2267 Erros 749 Accuracy 0.751657824933687 Size 9354 nodes
+Total 3016 Sucessos 2294 Erros 722 Accuracy 0.7606100795755968 Size 9371 nodes
+Total 3016 Sucessos 2312 Erros 704 Accuracy 0.76657824933687 Size 9341 nodes
+Total 3016 Sucessos 2275 Erros 741 Accuracy 0.7543103448275862 Size 9226 nodes
+Total 3016 Sucessos 2286 Erros 730 Accuracy 0.7579575596816976 Size 9305 nodes
+Total 3016 Sucessos 2285 Erros 731 Accuracy 0.7576259946949602 Size 9242 nodes
+Total 3016 Sucessos 2262 Erros 754 Accuracy 0.75 Size 9328 nodes
+Total 3016 Sucessos 2266 Erros 750 Accuracy 0.7513262599469496 Size 9275 nodes
+rm -f adult_new.complete
+rm -f adult.data
+rm -f adult.test
+rm -f id3_tree.json
+python3 prepare_id3_data.py adult.complete adult_new.complete ?
+python3 decision_tree.py adult_headers.txt adult_new.complete validation 10 0 0
+Total 3017 Sucessos 2314 Erros 703 Accuracy 0.7669870732515744 Size 9324 nodes
+Total 3017 Sucessos 2314 Erros 703 Accuracy 0.7669870732515744 Size 9348 nodes
+Total 3016 Sucessos 2293 Erros 723 Accuracy 0.7602785145888594 Size 9340 nodes
+Total 3016 Sucessos 2304 Erros 712 Accuracy 0.7639257294429708 Size 9277 nodes
+Total 3016 Sucessos 2287 Erros 729 Accuracy 0.758289124668435 Size 9297 nodes
+Total 3016 Sucessos 2284 Erros 732 Accuracy 0.7572944297082228 Size 9350 nodes
+Total 3016 Sucessos 2252 Erros 764 Accuracy 0.746684350132626 Size 9223 nodes
+Total 3016 Sucessos 2252 Erros 764 Accuracy 0.746684350132626 Size 9381 nodes
+Total 3016 Sucessos 2233 Erros 783 Accuracy 0.7403846153846154 Size 9229 nodes
+Total 3016 Sucessos 2259 Erros 757 Accuracy 0.7490053050397878 Size 9161 nodes
+rm -f adult_new.complete
+rm -f adult.data
+rm -f adult.test
+rm -f id3_tree.json
+python3 prepare_id3_data.py adult.complete adult_new.complete ?
+python3 decision_tree.py adult_headers.txt adult_new.complete validation 10 0 0
+Total 3017 Sucessos 2267 Erros 750 Accuracy 0.7514086841233013 Size 9306 nodes
+Total 3017 Sucessos 2278 Erros 739 Accuracy 0.7550546900894929 Size 9289 nodes
+Total 3016 Sucessos 2322 Erros 694 Accuracy 0.769893899204244 Size 9336 nodes
+Total 3016 Sucessos 2283 Erros 733 Accuracy 0.7569628647214854 Size 9389 nodes
+Total 3016 Sucessos 2241 Erros 775 Accuracy 0.7430371352785146 Size 9347 nodes
+Total 3016 Sucessos 2317 Erros 699 Accuracy 0.7682360742705571 Size 9287 nodes
+Total 3016 Sucessos 2276 Erros 740 Accuracy 0.7546419098143236 Size 9266 nodes
+Total 3016 Sucessos 2276 Erros 740 Accuracy 0.7546419098143236 Size 9337 nodes
+Total 3016 Sucessos 2243 Erros 773 Accuracy 0.7437002652519894 Size 9232 nodes
+Total 3016 Sucessos 2277 Erros 739 Accuracy 0.754973474801061 Size 9302 nodes
+rm -f adult_new.complete
+rm -f adult.data
+rm -f adult.test
+rm -f id3_tree.json
+python3 prepare_id3_data.py adult.complete adult_new.complete ?
+python3 decision_tree.py adult_headers.txt adult_new.complete validation 10 0 0
+Total 3017 Sucessos 2289 Erros 728 Accuracy 0.7587006960556845 Size 9227 nodes
+Total 3017 Sucessos 2275 Erros 742 Accuracy 0.7540603248259861 Size 9311 nodes
+Total 3016 Sucessos 2222 Erros 794 Accuracy 0.736737400530504 Size 9219 nodes
+Total 3016 Sucessos 2228 Erros 788 Accuracy 0.7387267904509284 Size 9307 nodes
+Total 3016 Sucessos 2313 Erros 703 Accuracy 0.7669098143236074 Size 9276 nodes
+Total 3016 Sucessos 2245 Erros 771 Accuracy 0.7443633952254642 Size 9332 nodes
+Total 3016 Sucessos 2316 Erros 700 Accuracy 0.7679045092838196 Size 9407 nodes
+Total 3016 Sucessos 2311 Erros 705 Accuracy 0.7662466843501327 Size 9314 nodes
+Total 3016 Sucessos 2298 Erros 718 Accuracy 0.7619363395225465 Size 9411 nodes
+Total 3016 Sucessos 2264 Erros 752 Accuracy 0.7506631299734748 Size 9323 nodes
+rm -f adult_new.complete
+rm -f adult.data
+rm -f adult.test
+rm -f id3_tree.json
+python3 prepare_id3_data.py adult.complete adult_new.complete ?
+python3 decision_tree.py adult_headers.txt adult_new.complete validation 10 0 0
+Total 3017 Sucessos 2276 Erros 741 Accuracy 0.7543917799138217 Size 9251 nodes
+Total 3017 Sucessos 2268 Erros 749 Accuracy 0.7517401392111369 Size 9390 nodes
+Total 3016 Sucessos 2257 Erros 759 Accuracy 0.748342175066313 Size 9310 nodes
+Total 3016 Sucessos 2268 Erros 748 Accuracy 0.7519893899204244 Size 9308 nodes
+Total 3016 Sucessos 2253 Erros 763 Accuracy 0.7470159151193634 Size 9272 nodes
+Total 3016 Sucessos 2292 Erros 724 Accuracy 0.7599469496021221 Size 9313 nodes
+Total 3016 Sucessos 2224 Erros 792 Accuracy 0.7374005305039788 Size 9272 nodes
+Total 3016 Sucessos 2262 Erros 754 Accuracy 0.75 Size 9196 nodes
+Total 3016 Sucessos 2270 Erros 746 Accuracy 0.7526525198938993 Size 9293 nodes
+Total 3016 Sucessos 2283 Erros 733 Accuracy 0.7569628647214854 Size 9391 nodes
+rm -f adult_new.complete
+rm -f adult.data
+rm -f adult.test
+rm -f id3_tree.json
+python3 prepare_id3_data.py adult.complete adult_new.complete ?
+python3 decision_tree.py adult_headers.txt adult_new.complete validation 10 0 0
+Total 3017 Sucessos 2263 Erros 754 Accuracy 0.7500828637719589 Size 9380 nodes
+Total 3017 Sucessos 2229 Erros 788 Accuracy 0.7388133907855485 Size 9183 nodes
+Total 3016 Sucessos 2272 Erros 744 Accuracy 0.753315649867374 Size 9288 nodes
+Total 3016 Sucessos 2310 Erros 706 Accuracy 0.7659151193633952 Size 9326 nodes
+Total 3016 Sucessos 2306 Erros 710 Accuracy 0.7645888594164456 Size 9306 nodes
+Total 3016 Sucessos 2282 Erros 734 Accuracy 0.756631299734748 Size 9243 nodes
+Total 3016 Sucessos 2309 Erros 707 Accuracy 0.7655835543766578 Size 9335 nodes
+Total 3016 Sucessos 2283 Erros 733 Accuracy 0.7569628647214854 Size 9278 nodes
+Total 3016 Sucessos 2274 Erros 742 Accuracy 0.7539787798408488 Size 9305 nodes
+Total 3016 Sucessos 2270 Erros 746 Accuracy 0.7526525198938993 Size 9265 nodes
+rm -f adult_new.complete
+rm -f adult.data
+rm -f adult.test
+rm -f id3_tree.json
+python3 prepare_id3_data.py adult.complete adult_new.complete ?
+python3 decision_tree.py adult_headers.txt adult_new.complete validation 10 0 0
+Total 3017 Sucessos 2273 Erros 744 Accuracy 0.7533974146503148 Size 9238 nodes
+Total 3017 Sucessos 2290 Erros 727 Accuracy 0.7590321511435201 Size 9333 nodes
+Total 3016 Sucessos 2289 Erros 727 Accuracy 0.7589522546419099 Size 9266 nodes
+Total 3016 Sucessos 2311 Erros 705 Accuracy 0.7662466843501327 Size 9323 nodes
+Total 3016 Sucessos 2340 Erros 676 Accuracy 0.7758620689655172 Size 9351 nodes
+Total 3016 Sucessos 2311 Erros 705 Accuracy 0.7662466843501327 Size 9334 nodes
+Total 3016 Sucessos 2271 Erros 745 Accuracy 0.7529840848806366 Size 9325 nodes
+Total 3016 Sucessos 2271 Erros 745 Accuracy 0.7529840848806366 Size 9289 nodes
+Total 3016 Sucessos 2282 Erros 734 Accuracy 0.756631299734748 Size 9310 nodes
+Total 3016 Sucessos 2258 Erros 758 Accuracy 0.7486737400530504 Size 9247 nodes
