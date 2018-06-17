@@ -346,12 +346,12 @@ def run(
             folds.insert(i, fold_aux)
 
     if action == 'ifthen':
-        id3_tree = read_id3_tree_pruned()
+        id3_tree = read_id3_tree()
         ifthen = convert_to_if_then(id3_tree, file_data, headers)
         save_ifthen_to_file(ifthen, IFTHEN_FILE_PATH)
 
     if action == 'ifthen-prune':
-        id3_tree = read_id3_tree()
+        id3_tree = read_id3_tree_pruned()
         ifthen = convert_to_if_then(id3_tree, file_data, headers)
         save_ifthen_to_file(ifthen, IFTHEN_PRUNE_FILE_PATH)
 
