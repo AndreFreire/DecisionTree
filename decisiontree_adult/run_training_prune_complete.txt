@@ -1,14 +1,5 @@
 rm -f adult.validation
 python3 prepare_id3_data.py adult.complete adult_new.complete ?
-rm -f adult.validation
-python3 prepare_id3_data.py adult.complete adult_new.complete ?
-rm -f adult.validation
-python3 prepare_id3_data.py adult.complete adult_new.complete ?
-rm -f adult.validation
-python3 prepare_id3_data.py adult.complete adult_new.complete ?
-./divide_file_validation.sh adult_new.complete adult.data adult.test adult.validation
-rm -f adult.validation
-python3 prepare_id3_data.py adult.complete adult_new.complete ?
 ./divide_file_validation.sh adult_new.complete adult.data adult.test adult.validation
 python3 decision_tree.py adult_headers.txt adult.data prune 0 adult.validation
 accuracy train: 0.8847629422630606 - accuracy test: 0.75 - size 7110 nodes
