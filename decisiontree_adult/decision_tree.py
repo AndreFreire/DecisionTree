@@ -161,31 +161,45 @@ def calculate_accuracy(id3_tree, file_data, headers):
     return success / (success + errors)
 
 
-def prune_tree(id3_tree, id3_tree_part, file_data, headers):
+def prune_tree(id3_tree, id3_tree_part, file_data_test, headers, file_data):
+    import pdb;pdb.set_trace()
     for key, value in id3_tree_part.items():
         if value not in [NEGATIVE_DECISION, POSITIVE_DECISION]:
-            old_accuracy = calculate_accuracy(id3_tree, file_data, headers)
+            old_accuracy = calculate_accuracy(
+                id3_tree, file_data_test, headers
+            )
             branch_aux = copy(value)
 
             id3_tree_part[key] = POSITIVE_DECISION
             positive_accuracy = calculate_accuracy(
-                id3_tree, file_data, headers
+                id3_tree, file_data_test, headers
             )
 
             id3_tree_part[key] = NEGATIVE_DECISION
             negative_accuracy = calculate_accuracy(
-                id3_tree, file_data, headers
+                id3_tree, file_data_test, headers
             )
 
             if (old_accuracy >= negative_accuracy
                and old_accuracy >= positive_accuracy):
                 id3_tree_part[key] = branch_aux
-            elif positive_accuracy > negative_accuracy:
-                id3_tree_part[key] = POSITIVE_DECISION
-            else:
-                id3_tree_part[key] = NEGATIVE_DECISION
 
-            prune_tree(id3_tree, value, file_data, headers)
+            else:
+                new_accuracy = calculate_accuracy(
+                    id3_tree, file_data, headers
+                )
+                print('accuracy train: {} - accuracy test: {}'.format(
+                        new_accuracy, max(
+                            positive_accuracy, negative_accuracy
+                        )
+                    )
+                )
+                if positive_accuracy > negative_accuracy:
+                    id3_tree_part[key] = POSITIVE_DECISION
+                else:
+                    id3_tree_part[key] = NEGATIVE_DECISION
+
+            prune_tree(id3_tree, value, file_data_test, headers, file_data)
     return id3_tree
 
 
@@ -251,8 +265,11 @@ def run(
         id3_tree = train_decision_tree(
             headers, file_data, total_entropy_adult
         )
-        file_data = read_csv_file(input_file_test)
-        id3_pruned_tree = prune_tree(id3_tree, id3_tree, file_data, headers)
+        file_data = read_csv_file(input_file_data)
+        file_data_test = read_csv_file(input_file_test)
+        id3_pruned_tree = prune_tree(
+            id3_tree, id3_tree, file_data_test, headers, file_data
+        )
         save_json_to_file(id3_pruned_tree, TREE_PRUNED_FILE_NAME)
 
 
