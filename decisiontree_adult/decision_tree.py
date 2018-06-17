@@ -184,22 +184,22 @@ def count_nodes(id3_tree):
     return keys
 
 
-def prune_tree(id3_tree, id3_tree_part, file_data_test, headers, file_data):
+def prune_tree(id3_tree, id3_tree_part, file_data_validation, headers, file_data_training, file_data_test):
     for key, value in id3_tree_part.items():
         if value not in [NEGATIVE_DECISION, POSITIVE_DECISION]:
             old_accuracy = calculate_accuracy(
-                id3_tree, file_data_test, headers
+                id3_tree, file_data_validation, headers
             )
             branch_aux = copy(value)
 
             id3_tree_part[key] = POSITIVE_DECISION
             positive_accuracy = calculate_accuracy(
-                id3_tree, file_data_test, headers
+                id3_tree, file_data_validation, headers
             )
 
             id3_tree_part[key] = NEGATIVE_DECISION
             negative_accuracy = calculate_accuracy(
-                id3_tree, file_data_test, headers
+                id3_tree, file_data_validation, headers
             )
 
             if (old_accuracy >= negative_accuracy
@@ -207,14 +207,17 @@ def prune_tree(id3_tree, id3_tree_part, file_data_test, headers, file_data):
                 id3_tree_part[key] = branch_aux
 
             else:
-                new_accuracy = calculate_accuracy(
-                    id3_tree, file_data, headers
+                new_accuracy_training = calculate_accuracy(
+                    id3_tree, file_data_training, headers
                 )
-                print('accuracy train: {} - accuracy test: {} - size {} nodes'
+                new_accuracy_test = calculate_accuracy(
+                    id3_tree, file_data_test, headers
+                )
+                print('accuracy train: {} - accuracy validation: {} - accuracy test {} - size {} nodes'
                       .format(
-                        new_accuracy, max(
+                        new_accuracy_training, max(
                             positive_accuracy, negative_accuracy
-                        ), count_nodes(id3_tree)
+                        ), new_accuracy_test, count_nodes(id3_tree)
                        ))
 
                 if positive_accuracy > negative_accuracy:
@@ -222,7 +225,7 @@ def prune_tree(id3_tree, id3_tree_part, file_data_test, headers, file_data):
                 else:
                     id3_tree_part[key] = NEGATIVE_DECISION
 
-            prune_tree(id3_tree, value, file_data_test, headers, file_data)
+            prune_tree(id3_tree, value, file_data_validation, headers, file_data_training, file_data_test)
     return id3_tree
 
 
@@ -299,7 +302,7 @@ def print_accuracy(id3_tree, headers, file_data):
 
 def run(
     action, input_file_headers, input_file_data,
-    fold_number, input_file_test
+    fold_number, input_file_test, input_file_validation
 ):
     headers = read_csv_file(input_file_headers)[0]
     file_data = read_csv_file(input_file_data)
@@ -352,7 +355,6 @@ def run(
         ifthen = convert_to_if_then(id3_tree, file_data, headers)
         save_ifthen_to_file(ifthen, IFTHEN_PRUNE_FILE_PATH)
 
-
     if action == 'prune':
         total_entropy_adult = calculate_total_entropy(
             file_data, POSITIVE_DECISION, NEGATIVE_DECISION,
@@ -363,8 +365,10 @@ def run(
         )
         file_data = read_csv_file(input_file_data)
         file_data_test = read_csv_file(input_file_test)
+        file_data_validation = read_csv_file(input_file_validation)
         id3_pruned_tree = prune_tree(
-            id3_tree, id3_tree, file_data_test, headers, file_data
+            id3_tree, id3_tree, file_data_test, headers, file_data,
+            file_data_validation
         )
         save_json_to_file(id3_pruned_tree, TREE_PRUNED_FILE_NAME)
 
@@ -376,7 +380,8 @@ if __name__ == '__main__':
     input_file_data_param = sys.argv[2]
     fold_number = int(sys.argv[4])
     input_file_test = sys.argv[5]
+    input_file_validation = sys.argv[6]
     action = sys.argv[3]
     run(action, input_file_headers_param,
         input_file_data_param, fold_number,
-        input_file_test)
+        input_file_test, input_file_validation)

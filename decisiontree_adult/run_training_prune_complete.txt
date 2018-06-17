@@ -1,81 +1,114 @@
 rm -f adult.validation
 python3 prepare_id3_data.py adult.complete adult_new.complete ?
 ./divide_file_validation.sh adult_new.complete adult.data adult.test adult.validation
-python3 decision_tree.py adult_headers.txt adult.data prune 0 adult.validation
-accuracy train: 0.8847629422630606 - accuracy test: 0.75 - size 7110 nodes
-accuracy train: 0.8827736465684649 - accuracy test: 0.754420866489832 - size 6786 nodes
-accuracy train: 0.8765689385686544 - accuracy test: 0.7557471264367817 - size 6693 nodes
-accuracy train: 0.8810685359730971 - accuracy test: 0.7559681697612732 - size 6661 nodes
-accuracy train: 0.8747217354236726 - accuracy test: 0.7568523430592397 - size 6573 nodes
-accuracy train: 0.8816369061715531 - accuracy test: 0.7572944297082228 - size 6551 nodes
-accuracy train: 0.8812579927059158 - accuracy test: 0.7575154730327144 - size 6541 nodes
-accuracy train: 0.8811632643395064 - accuracy test: 0.757736516357206 - size 6539 nodes
-accuracy train: 0.8810211717898925 - accuracy test: 0.7579575596816976 - size 6528 nodes
-accuracy train: 0.8809738076066879 - accuracy test: 0.7583996463306808 - size 6507 nodes
-accuracy train: 0.8809264434234831 - accuracy test: 0.7586206896551724 - size 6490 nodes
-accuracy train: 0.8808317150570738 - accuracy test: 0.7588417329796641 - size 6482 nodes
-accuracy train: 0.8807843508738692 - accuracy test: 0.7590627763041556 - size 6477 nodes
-accuracy train: 0.8806422583242552 - accuracy test: 0.7592838196286472 - size 6456 nodes
-accuracy train: 0.8807369866906645 - accuracy test: 0.7597259062776304 - size 6424 nodes
-accuracy train: 0.8803107090418226 - accuracy test: 0.7601679929266136 - size 6397 nodes
-accuracy train: 0.880121252309004 - accuracy test: 0.7606100795755968 - size 6389 nodes
-accuracy train: 0.8791266044617061 - accuracy test: 0.7608311229000884 - size 6363 nodes
-accuracy train: 0.8778951356983848 - accuracy test: 0.7612732095490716 - size 6337 nodes
-accuracy train: 0.8787476909960688 - accuracy test: 0.7614942528735632 - size 6329 nodes
-accuracy train: 0.8785108700800455 - accuracy test: 0.7617152961980548 - size 6320 nodes
-accuracy train: 0.8784161417136361 - accuracy test: 0.7619363395225465 - size 6313 nodes
-accuracy train: 0.8778951356983848 - accuracy test: 0.762157382847038 - size 6276 nodes
-accuracy train: 0.8778004073319755 - accuracy test: 0.7625994694960212 - size 6271 nodes
-accuracy train: 0.8777056789655663 - accuracy test: 0.7628205128205128 - size 6264 nodes
-accuracy train: 0.8774688580495429 - accuracy test: 0.7630415561450045 - size 6252 nodes
-accuracy train: 0.8774688580495429 - accuracy test: 0.763262599469496 - size 6250 nodes
-accuracy train: 0.8772320371335196 - accuracy test: 0.7634836427939876 - size 6228 nodes
-accuracy train: 0.8765215743854498 - accuracy test: 0.764367816091954 - size 6171 nodes
-accuracy train: 0.8779424998815896 - accuracy test: 0.7681255526083113 - size 6084 nodes
-accuracy train: 0.8773741296831337 - accuracy test: 0.7683465959328029 - size 6065 nodes
-accuracy train: 0.8780372282479989 - accuracy test: 0.7696728558797524 - size 6000 nodes
-accuracy train: 0.877184672950315 - accuracy test: 0.7701149425287356 - size 5964 nodes
-accuracy train: 0.8770899445839057 - accuracy test: 0.7705570291777188 - size 5945 nodes
-accuracy train: 0.877184672950315 - accuracy test: 0.7707780725022104 - size 5943 nodes
-accuracy train: 0.876900487851087 - accuracy test: 0.770999115826702 - size 5917 nodes
-accuracy train: 0.8756690190877658 - accuracy test: 0.7712201591511937 - size 5857 nodes
-accuracy train: 0.8755742907213565 - accuracy test: 0.7714412024756853 - size 5830 nodes
-accuracy train: 0.8739165443091934 - accuracy test: 0.7716622458001768 - size 5825 nodes
-accuracy train: 0.8743428219580354 - accuracy test: 0.7738726790450928 - size 5779 nodes
-accuracy train: 0.8744375503244447 - accuracy test: 0.7743147656940761 - size 5720 nodes
-accuracy train: 0.8740586368588074 - accuracy test: 0.7749778956675508 - size 5596 nodes
-accuracy train: 0.8742954577748306 - accuracy test: 0.7802829354553492 - size 5406 nodes
-accuracy train: 0.873963908492398 - accuracy test: 0.780946065428824 - size 5329 nodes
-accuracy train: 0.8734902666603515 - accuracy test: 0.7811671087533156 - size 5313 nodes
-accuracy train: 0.8736797233931701 - accuracy test: 0.7813881520778072 - size 5309 nodes
-accuracy train: 0.8672381944773362 - accuracy test: 0.784261715296198 - size 5150 nodes
-accuracy train: 0.8725429829962582 - accuracy test: 0.7847038019451813 - size 5128 nodes
-accuracy train: 0.8677592004925875 - accuracy test: 0.7871352785145889 - size 5027 nodes
-accuracy train: 0.8590915549661347 - accuracy test: 0.7931034482758621 - size 4868 nodes
-accuracy train: 0.8725429829962582 - accuracy test: 0.7933244916003537 - size 4846 nodes
-accuracy train: 0.871453606782551 - accuracy test: 0.7946507515473032 - size 4791 nodes
-accuracy train: 0.8712167858665277 - accuracy test: 0.7950928381962865 - size 4759 nodes
-accuracy train: 0.8722114337138256 - accuracy test: 0.7953138815207781 - size 4753 nodes
-accuracy train: 0.871879884431393 - accuracy test: 0.7957559681697612 - size 4732 nodes
-accuracy train: 0.8709799649505044 - accuracy test: 0.7966401414677277 - size 4716 nodes
-accuracy train: 0.869369582721546 - accuracy test: 0.7970822281167109 - size 4648 nodes
-accuracy train: 0.8626912328896889 - accuracy test: 0.7981874447391689 - size 4548 nodes
-accuracy train: 0.8685643916070668 - accuracy test: 0.7984084880636605 - size 4543 nodes
-accuracy train: 0.8644437076682613 - accuracy test: 0.8006189213085765 - size 4455 nodes
-accuracy train: 0.8684222990574527 - accuracy test: 0.8008399646330681 - size 4453 nodes
-accuracy train: 0.8684222990574527 - accuracy test: 0.8010610079575596 - size 4437 nodes
-accuracy train: 0.8678539288589968 - accuracy test: 0.8017241379310345 - size 4384 nodes
-accuracy train: 0.8653436271491498 - accuracy test: 0.8021662245800176 - size 4279 nodes
-accuracy train: 0.860986122294321 - accuracy test: 0.8034924845269673 - size 4159 nodes
-accuracy train: 0.8598493818974092 - accuracy test: 0.8045977011494253 - size 4117 nodes
-accuracy train: 0.8588073698669066 - accuracy test: 0.8063660477453581 - size 4046 nodes
-accuracy train: 0.8577179936531995 - accuracy test: 0.8065870910698497 - size 3989 nodes
-accuracy train: 0.8572917160043575 - accuracy test: 0.8068081343943413 - size 3963 nodes
-accuracy train: 0.8571496234547435 - accuracy test: 0.8070291777188329 - size 3937 nodes
-accuracy train: 0.8562023397906503 - accuracy test: 0.8087975243147657 - size 3794 nodes
-accuracy train: 0.8560602472410364 - accuracy test: 0.8094606542882405 - size 3761 nodes
-accuracy train: 0.8520342916686402 - accuracy test: 0.8096816976127321 - size 3505 nodes
-accuracy train: 0.8519869274854355 - accuracy test: 0.8099027409372237 - size 3503 nodes
-accuracy train: 0.8508975512717283 - accuracy test: 0.8112290008841733 - size 3402 nodes
-accuracy train: 0.8319992421730688 - accuracy test: 0.8278072502210433 - size 1394 nodes
-accuracy train: 0.8150902287690048 - accuracy test: 0.8282493368700266 - size 725 nodes
+python3 decision_tree.py adult_headers.txt adult.data prune 0 adult.validation adult.test
+accuracy train: 0.8947094207360394 - accuracy validation: 0.7588417329796641 - accuracy test 0.7559681697612732 - size 7428 nodes
+accuracy train: 0.8882678918202056 - accuracy validation: 0.765473032714412 - accuracy test 0.7628205128205128 - size 6775 nodes
+accuracy train: 0.8882678918202056 - accuracy validation: 0.7656940760389036 - accuracy test 0.7628205128205128 - size 6773 nodes
+accuracy train: 0.8878416141713636 - accuracy validation: 0.7659151193633952 - accuracy test 0.7619363395225465 - size 6771 nodes
+accuracy train: 0.8867048737744517 - accuracy validation: 0.7667992926613616 - accuracy test 0.7619363395225465 - size 6736 nodes
+accuracy train: 0.886941694690475 - accuracy validation: 0.7670203359858532 - accuracy test 0.7617152961980548 - size 6699 nodes
+accuracy train: 0.885426040827926 - accuracy validation: 0.7674624226348364 - accuracy test 0.7619363395225465 - size 6628 nodes
+accuracy train: 0.8852839482783119 - accuracy validation: 0.767683465959328 - accuracy test 0.762157382847038 - size 6620 nodes
+accuracy train: 0.8852365840951073 - accuracy validation: 0.7681255526083113 - accuracy test 0.7619363395225465 - size 6606 nodes
+accuracy train: 0.8846682138966514 - accuracy validation: 0.7685676392572944 - accuracy test 0.7623784261715296 - size 6566 nodes
+accuracy train: 0.8831999242173069 - accuracy validation: 0.768788682581786 - accuracy test 0.7625994694960212 - size 6518 nodes
+accuracy train: 0.8836262018661488 - accuracy validation: 0.7690097259062776 - accuracy test 0.7641467727674625 - size 6470 nodes
+accuracy train: 0.8834367451333301 - accuracy validation: 0.7692307692307693 - accuracy test 0.7641467727674625 - size 6460 nodes
+accuracy train: 0.8832946525837162 - accuracy validation: 0.7694518125552609 - accuracy test 0.7639257294429708 - size 6446 nodes
+accuracy train: 0.8831525600341023 - accuracy validation: 0.7696728558797524 - accuracy test 0.7641467727674625 - size 6438 nodes
+accuracy train: 0.8818737270875764 - accuracy validation: 0.769893899204244 - accuracy test 0.7637046861184792 - size 6404 nodes
+accuracy train: 0.8832946525837162 - accuracy validation: 0.7707780725022104 - accuracy test 0.7648099027409372 - size 6378 nodes
+accuracy train: 0.8818263629043717 - accuracy validation: 0.770999115826702 - accuracy test 0.7634836427939876 - size 6341 nodes
+accuracy train: 0.8828210107516696 - accuracy validation: 0.7712201591511937 - accuracy test 0.765473032714412 - size 6339 nodes
+accuracy train: 0.8827262823852603 - accuracy validation: 0.7718832891246684 - accuracy test 0.7656940760389036 - size 6321 nodes
+accuracy train: 0.8815895419883484 - accuracy validation: 0.77210433244916 - accuracy test 0.7659151193633952 - size 6307 nodes
+accuracy train: 0.8822526405532136 - accuracy validation: 0.7723253757736517 - accuracy test 0.7659151193633952 - size 6288 nodes
+accuracy train: 0.8758111116373798 - accuracy validation: 0.7729885057471264 - accuracy test 0.7619363395225465 - size 6200 nodes
+accuracy train: 0.8818737270875764 - accuracy validation: 0.7734305923961097 - accuracy test 0.7656940760389036 - size 6192 nodes
+accuracy train: 0.8805475299578459 - accuracy validation: 0.7736516357206012 - accuracy test 0.7645888594164456 - size 6158 nodes
+accuracy train: 0.8734902666603515 - accuracy validation: 0.7745358090185677 - accuracy test 0.7595048629531388 - size 6056 nodes
+accuracy train: 0.8736797233931701 - accuracy validation: 0.7758620689655172 - accuracy test 0.7588417329796641 - size 5971 nodes
+accuracy train: 0.8811632643395064 - accuracy validation: 0.7763041556145004 - accuracy test 0.767683465959328 - size 5960 nodes
+accuracy train: 0.8807369866906645 - accuracy validation: 0.7767462422634837 - accuracy test 0.7679045092838196 - size 5941 nodes
+accuracy train: 0.8802159806754133 - accuracy validation: 0.7769672855879752 - accuracy test 0.7694518125552609 - size 5860 nodes
+accuracy train: 0.8802159806754133 - accuracy validation: 0.7771883289124668 - accuracy test 0.7694518125552609 - size 5856 nodes
+accuracy train: 0.8798844313929807 - accuracy validation: 0.7774093722369585 - accuracy test 0.7692307692307693 - size 5846 nodes
+accuracy train: 0.8796002462937527 - accuracy validation: 0.7776304155614501 - accuracy test 0.7692307692307693 - size 5832 nodes
+accuracy train: 0.8799791597593899 - accuracy validation: 0.7778514588859416 - accuracy test 0.7692307692307693 - size 5816 nodes
+accuracy train: 0.8789371477288874 - accuracy validation: 0.7785145888594165 - accuracy test 0.769893899204244 - size 5785 nodes
+accuracy train: 0.8788424193624781 - accuracy validation: 0.7787356321839081 - accuracy test 0.7696728558797524 - size 5781 nodes
+accuracy train: 0.8788424193624781 - accuracy validation: 0.7789566755083996 - accuracy test 0.769893899204244 - size 5775 nodes
+accuracy train: 0.8779424998815896 - accuracy validation: 0.7791777188328912 - accuracy test 0.7694518125552609 - size 5755 nodes
+accuracy train: 0.8786529626296594 - accuracy validation: 0.7796198054818745 - accuracy test 0.7696728558797524 - size 5747 nodes
+accuracy train: 0.8784161417136361 - accuracy validation: 0.7798408488063661 - accuracy test 0.7696728558797524 - size 5734 nodes
+accuracy train: 0.8783214133472268 - accuracy validation: 0.7800618921308576 - accuracy test 0.769893899204244 - size 5712 nodes
+accuracy train: 0.8782740491640222 - accuracy validation: 0.7802829354553492 - accuracy test 0.769893899204244 - size 5710 nodes
+accuracy train: 0.8776583147823616 - accuracy validation: 0.7813881520778072 - accuracy test 0.7707780725022104 - size 5637 nodes
+accuracy train: 0.8777530431487709 - accuracy validation: 0.7835985853227233 - accuracy test 0.7738726790450928 - size 5528 nodes
+accuracy train: 0.8771373087671103 - accuracy validation: 0.7840406719717065 - accuracy test 0.7736516357206012 - size 5497 nodes
+accuracy train: 0.8775635864159522 - accuracy validation: 0.7849248452696729 - accuracy test 0.7749778956675508 - size 5458 nodes
+accuracy train: 0.877184672950315 - accuracy validation: 0.7851458885941645 - accuracy test 0.7745358090185677 - size 5434 nodes
+accuracy train: 0.877184672950315 - accuracy validation: 0.7855879752431476 - accuracy test 0.7745358090185677 - size 5432 nodes
+accuracy train: 0.8768531236678824 - accuracy validation: 0.7858090185676393 - accuracy test 0.7740937223695844 - size 5428 nodes
+accuracy train: 0.8768057594846776 - accuracy validation: 0.7862511052166224 - accuracy test 0.7756410256410257 - size 5367 nodes
+accuracy train: 0.8766163027518591 - accuracy validation: 0.7869142351900973 - accuracy test 0.7765251989389921 - size 5333 nodes
+accuracy train: 0.8772320371335196 - accuracy validation: 0.7877984084880637 - accuracy test 0.7805039787798409 - size 5244 nodes
+accuracy train: 0.876758395301473 - accuracy validation: 0.7895667550839964 - accuracy test 0.784261715296198 - size 5053 nodes
+accuracy train: 0.876758395301473 - accuracy validation: 0.7897877984084881 - accuracy test 0.7847038019451813 - size 5047 nodes
+accuracy train: 0.8766163027518591 - accuracy validation: 0.7900088417329797 - accuracy test 0.7847038019451813 - size 5045 nodes
+accuracy train: 0.8768057594846776 - accuracy validation: 0.7902298850574713 - accuracy test 0.7847038019451813 - size 5043 nodes
+accuracy train: 0.8766163027518591 - accuracy validation: 0.7913351016799293 - accuracy test 0.7851458885941645 - size 5033 nodes
+accuracy train: 0.8739165443091934 - accuracy validation: 0.7919982316534041 - accuracy test 0.7860300618921309 - size 4915 nodes
+accuracy train: 0.8688485767062947 - accuracy validation: 0.7937665782493368 - accuracy test 0.7818302387267905 - size 4833 nodes
+accuracy train: 0.8733008099275328 - accuracy validation: 0.7939876215738285 - accuracy test 0.785366931918656 - size 4829 nodes
+accuracy train: 0.8729692606451002 - accuracy validation: 0.7944297082228117 - accuracy test 0.7849248452696729 - size 4816 nodes
+accuracy train: 0.8729218964618956 - accuracy validation: 0.7946507515473032 - accuracy test 0.7849248452696729 - size 4810 nodes
+accuracy train: 0.8729692606451002 - accuracy validation: 0.7948717948717948 - accuracy test 0.7844827586206896 - size 4804 nodes
+accuracy train: 0.8725429829962582 - accuracy validation: 0.7950928381962865 - accuracy test 0.7844827586206896 - size 4788 nodes
+accuracy train: 0.8729692606451002 - accuracy validation: 0.7957559681697612 - accuracy test 0.7844827586206896 - size 4778 nodes
+accuracy train: 0.8720219769810069 - accuracy validation: 0.7959770114942529 - accuracy test 0.7840406719717065 - size 4759 nodes
+accuracy train: 0.8727324397290769 - accuracy validation: 0.7961980548187445 - accuracy test 0.7844827586206896 - size 4751 nodes
+accuracy train: 0.8727324397290769 - accuracy validation: 0.7968611847922192 - accuracy test 0.7844827586206896 - size 4735 nodes
+accuracy train: 0.8729692606451002 - accuracy validation: 0.7970822281167109 - accuracy test 0.7849248452696729 - size 4716 nodes
+accuracy train: 0.8729218964618956 - accuracy validation: 0.7975243147656941 - accuracy test 0.785366931918656 - size 4710 nodes
+accuracy train: 0.8727324397290769 - accuracy validation: 0.7981874447391689 - accuracy test 0.7855879752431476 - size 4691 nodes
+accuracy train: 0.8724482546298489 - accuracy validation: 0.7984084880636605 - accuracy test 0.7855879752431476 - size 4667 nodes
+accuracy train: 0.8711220575001184 - accuracy validation: 0.7986295313881521 - accuracy test 0.7844827586206896 - size 4635 nodes
+accuracy train: 0.8702695022024345 - accuracy validation: 0.7999557913351016 - accuracy test 0.785366931918656 - size 4573 nodes
+accuracy train: 0.8688959408894994 - accuracy validation: 0.8003978779840849 - accuracy test 0.7847038019451813 - size 4539 nodes
+accuracy train: 0.8699853171032066 - accuracy validation: 0.8006189213085765 - accuracy test 0.785366931918656 - size 4537 nodes
+accuracy train: 0.8623123194240515 - accuracy validation: 0.803050397877984 - accuracy test 0.7802829354553492 - size 4386 nodes
+accuracy train: 0.8688959408894994 - accuracy validation: 0.8034924845269673 - accuracy test 0.7838196286472149 - size 4365 nodes
+accuracy train: 0.8687064841566807 - accuracy validation: 0.8037135278514589 - accuracy test 0.7835985853227233 - size 4359 nodes
+accuracy train: 0.8684696632406574 - accuracy validation: 0.8039345711759505 - accuracy test 0.7833775419982316 - size 4357 nodes
+accuracy train: 0.8687538483398853 - accuracy validation: 0.8043766578249337 - accuracy test 0.7849248452696729 - size 4333 nodes
+accuracy train: 0.8679012930422015 - accuracy validation: 0.8045977011494253 - accuracy test 0.7844827586206896 - size 4317 nodes
+accuracy train: 0.8538341306304172 - accuracy validation: 0.8072502210433244 - accuracy test 0.7703359858532273 - size 4155 nodes
+accuracy train: 0.8679960214086108 - accuracy validation: 0.8081343943412909 - accuracy test 0.7877984084880637 - size 4130 nodes
+accuracy train: 0.8679012930422015 - accuracy validation: 0.8083554376657824 - accuracy test 0.7880194518125553 - size 4122 nodes
+accuracy train: 0.8679012930422015 - accuracy validation: 0.8085764809902741 - accuracy test 0.7880194518125553 - size 4118 nodes
+accuracy train: 0.8677118363093829 - accuracy validation: 0.8090185676392573 - accuracy test 0.787577365163572 - size 4090 nodes
+accuracy train: 0.8676171079429735 - accuracy validation: 0.8092396109637489 - accuracy test 0.787577365163572 - size 4083 nodes
+accuracy train: 0.8675697437597688 - accuracy validation: 0.8096816976127321 - accuracy test 0.7877984084880637 - size 4079 nodes
+accuracy train: 0.8673329228437455 - accuracy validation: 0.8099027409372237 - accuracy test 0.7873563218390804 - size 4073 nodes
+accuracy train: 0.8672855586605409 - accuracy validation: 0.8101237842617153 - accuracy test 0.7873563218390804 - size 4055 nodes
+accuracy train: 0.8663856391796524 - accuracy validation: 0.8103448275862069 - accuracy test 0.787577365163572 - size 4030 nodes
+accuracy train: 0.866006725714015 - accuracy validation: 0.8110079575596817 - accuracy test 0.7877984084880637 - size 4017 nodes
+accuracy train: 0.8660540898972198 - accuracy validation: 0.8112290008841733 - accuracy test 0.7882404951370469 - size 4002 nodes
+accuracy train: 0.8647752569506939 - accuracy validation: 0.8116710875331565 - accuracy test 0.7882404951370469 - size 3973 nodes
+accuracy train: 0.8623596836072562 - accuracy validation: 0.8121131741821397 - accuracy test 0.7869142351900973 - size 3933 nodes
+accuracy train: 0.8644910718514659 - accuracy validation: 0.812555260831123 - accuracy test 0.7880194518125553 - size 3920 nodes
+accuracy train: 0.8647278927674892 - accuracy validation: 0.8127763041556145 - accuracy test 0.7884615384615384 - size 3918 nodes
+accuracy train: 0.8644437076682613 - accuracy validation: 0.8132183908045977 - accuracy test 0.78868258178603 - size 3885 nodes
+accuracy train: 0.8635911523705774 - accuracy validation: 0.8149867374005305 - accuracy test 0.7877984084880637 - size 3831 nodes
+accuracy train: 0.8634016956377587 - accuracy validation: 0.8154288240495137 - accuracy test 0.7880194518125553 - size 3826 nodes
+accuracy train: 0.8629754179889167 - accuracy validation: 0.8160919540229885 - accuracy test 0.7893457117595049 - size 3799 nodes
+accuracy train: 0.8628333254393028 - accuracy validation: 0.8163129973474801 - accuracy test 0.7891246684350133 - size 3793 nodes
+accuracy train: 0.8622175910576422 - accuracy validation: 0.8165340406719717 - accuracy test 0.7897877984084881 - size 3769 nodes
+accuracy train: 0.8620754985080282 - accuracy validation: 0.8167550839964633 - accuracy test 0.7897877984084881 - size 3767 nodes
+accuracy train: 0.8617439492255956 - accuracy validation: 0.8169761273209549 - accuracy test 0.7897877984084881 - size 3754 nodes
+accuracy train: 0.8619334059584143 - accuracy validation: 0.8171971706454465 - accuracy test 0.7900088417329797 - size 3752 nodes
+accuracy train: 0.8575759011035855 - accuracy validation: 0.8183023872679045 - accuracy test 0.7866931918656057 - size 3626 nodes
+accuracy train: 0.8427509117605267 - accuracy validation: 0.8357648099027409 - accuracy test 0.8050397877984085 - size 1841 nodes
+accuracy train: 0.8410931653483635 - accuracy validation: 0.8399646330680813 - accuracy test 0.8079133510167993 - size 1500 nodes
