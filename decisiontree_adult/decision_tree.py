@@ -159,35 +159,55 @@ def separate_folds(file_data, fold_number):
 
 
 def calculate_accuracy(id3_tree, file_data, headers):
-    success, errors = validate_fold(file_data, headers, id3_tree)
+    success = 0
+    errors = 0
+    for line in file_data:
+        tested_data = test_data(id3_tree, headers, line)
+        if tested_data:
+            success += 1
+        else:
+            errors += 1
     return success / (success + errors)
 
 
-def prune_tree(id3_tree, id3_tree_part, file_data, headers):
+def prune_tree(id3_tree, id3_tree_part, file_data_test, headers, file_data):
     for key, value in id3_tree_part.items():
         if value not in [NEGATIVE_DECISION, POSITIVE_DECISION]:
-            old_accuracy = calculate_accuracy(id3_tree, file_data, headers)
+            old_accuracy = calculate_accuracy(
+                id3_tree, file_data_test, headers
+            )
             branch_aux = copy(value)
 
             id3_tree_part[key] = POSITIVE_DECISION
             positive_accuracy = calculate_accuracy(
-                id3_tree, file_data, headers
+                id3_tree, file_data_test, headers
             )
 
             id3_tree_part[key] = NEGATIVE_DECISION
             negative_accuracy = calculate_accuracy(
-                id3_tree, file_data, headers
+                id3_tree, file_data_test, headers
             )
 
             if (old_accuracy >= negative_accuracy
                and old_accuracy >= positive_accuracy):
                 id3_tree_part[key] = branch_aux
-            elif positive_accuracy > negative_accuracy:
-                id3_tree_part[key] = POSITIVE_DECISION
-            else:
-                id3_tree_part[key] = NEGATIVE_DECISION
 
-            prune_tree(id3_tree, value, file_data, headers)
+            else:
+                new_accuracy = calculate_accuracy(
+                    id3_tree, file_data, headers
+                )
+                print('accuracy train: {} - accuracy test: {}'.format(
+                        new_accuracy, max(
+                            positive_accuracy, negative_accuracy
+                        )
+                    )
+                )
+                if positive_accuracy > negative_accuracy:
+                    id3_tree_part[key] = POSITIVE_DECISION
+                else:
+                    id3_tree_part[key] = NEGATIVE_DECISION
+
+            prune_tree(id3_tree, value, file_data_test, headers, file_data)
     return id3_tree
 
 
@@ -272,6 +292,9 @@ def run(
         print('Total {} Sucessos {} Erros {}'.format(
             success+errors, success, errors)
         )
+        print(calculate_accuracy(
+                    id3_tree, file_data, headers
+                ))
 
     if action == 'validation':
         folds = separate_folds(file_data, fold_number)
@@ -290,7 +313,14 @@ def run(
             id3_tree = train_decision_tree(
                 headers, training_fold, total_entropy_adult
             )
-            errors, success = validate_fold(fold_aux, headers, id3_tree)
+            success = 0
+            errors = 0
+            for line in fold_aux:
+                tested_data = test_data(id3_tree, headers, line)
+                if tested_data:
+                    success += 1
+                else:
+                    errors += 1
             print('Total {} Sucessos {} Erros {}'.format(
                 success+errors, success, errors)
             )
@@ -309,32 +339,12 @@ def run(
         id3_tree = train_decision_tree(
             headers, file_data, total_entropy_adult
         )
-        file_data = read_csv_file(input_file_test)
-        id3_pruned_tree = prune_tree(id3_tree, id3_tree, file_data, headers)
+        file_data = read_csv_file(input_file_data)
+        file_data_test = read_csv_file(input_file_test)
+        id3_pruned_tree = prune_tree(
+            id3_tree, id3_tree, file_data_test, headers, file_data
+        )
         save_json_to_file(id3_pruned_tree, TREE_PRUNED_FILE_NAME)
-
-
-def validate_data(line):
-    global id3_tree_global
-    global headers_data
-    return test_data(id3_tree_global, headers_data, line)
-
-
-def validate_fold(fold_aux, headers, id3_tree):
-    global id3_tree_global
-    global headers_data
-    headers_data = headers
-    id3_tree_global = id3_tree
-    success = 0
-    errors = 0
-    with ThreadPoolExecutor(max_workers=WORKER) as executor:
-        for tested_data in list(executor.map(validate_data, fold_aux)):
-            if tested_data:
-                success += 1
-            else:
-                errors += 1
-    return errors, success
-
 
 
 if __name__ == '__main__':
