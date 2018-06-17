@@ -1,0 +1,2 @@
+python3 decision_tree.py adult_headers.txt adult.test test_prune 0 0 0
+Total 4524 Sucessos 3655 Erros 869 Accuracy 0.8079133510167993 Size 1500 nodes
