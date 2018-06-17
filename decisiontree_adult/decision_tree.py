@@ -1,6 +1,9 @@
+
+import multiprocessing
 import json
 import sys
 
+from concurrent.futures import ThreadPoolExecutor
 from copy import copy
 from decisiontree.id3_algorithm import (calculate_total_entropy,
                                         calculate_information_gain)
@@ -15,6 +18,10 @@ SEPARATOR = '__'
 DECISION_INDEX = 14
 POSITIVE_DECISION = '>50K'
 NEGATIVE_DECISION = '<=50K'
+WORKER = multiprocessing.cpu_count() * 2
+
+global id3_tree_global
+global headers_data
 
 
 def _get_attribute_with_max_information_gain(
@@ -150,15 +157,7 @@ def separate_folds(file_data, fold_number):
 
 
 def calculate_accuracy(id3_tree, file_data, headers):
-    success = 0
-    errors = 0
-    for line in file_data:
-        tested_data = test_data(id3_tree, headers, line)
-        if tested_data:
-            success += 1
-        else:
-            errors += 1
-
+    success, errors = validate_fold(file_data, headers, id3_tree)
     return success / (success + errors)
 
 
@@ -237,15 +236,7 @@ def run(
             id3_tree = train_decision_tree(
                 headers, training_fold, total_entropy_adult
             )
-
-            success = 0
-            errors = 0
-            for line in fold_aux:
-                tested_data = test_data(id3_tree, headers, line)
-                if tested_data:
-                    success += 1
-                else:
-                    errors += 1
+            errors, success = validate_fold(fold_aux, headers, id3_tree)
             print('Total {} Sucessos {} Erros {}'.format(
                 success+errors, success, errors)
             )
@@ -263,6 +254,28 @@ def run(
         file_data = read_csv_file(input_file_test)
         id3_pruned_tree = prune_tree(id3_tree, id3_tree, file_data, headers)
         save_json_to_file(id3_pruned_tree, TREE_PRUNED_FILE_NAME)
+
+
+def validate_data(line):
+    global id3_tree_global
+    global headers_data
+    return test_data(id3_tree_global, headers_data, line)
+
+
+def validate_fold(fold_aux, headers, id3_tree):
+    global id3_tree_global
+    global headers_data
+    headers_data = headers
+    id3_tree_global = id3_tree
+    success = 0
+    errors = 0
+    with ThreadPoolExecutor(max_workers=WORKER) as executor:
+        for tested_data in list(executor.map(validate_data, fold_aux)):
+            if tested_data:
+                success += 1
+            else:
+                errors += 1
+    return errors, success
 
 
 if __name__ == '__main__':
