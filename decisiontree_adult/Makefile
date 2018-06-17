@@ -28,6 +28,9 @@ validate:
 test:
 	python3 decision_tree.py $(HEADERS_FILE) $(TEST_FILE_PROCESSED) test 0 0
 
+test_prune:
+	python3 decision_tree.py $(HEADERS_FILE) $(TEST_FILE_PROCESSED) test_prune 0 0
+
 prune:
 	python3 decision_tree.py $(HEADERS_FILE) adult.data prune 0 $(TEST_FILE_PROCESSED)
 
@@ -40,8 +43,10 @@ divide_prepare_file: prepare_data
 
 run_training_complete: clean divide_prepare_file train
 
-run_valid_fold_complete: run_training_complete validate
+run_valid_fold_complete: validate
 
 run_test_complete: test
+
+run_prune_test_complete: test_prune
 
 run_training_prune_complete: prune

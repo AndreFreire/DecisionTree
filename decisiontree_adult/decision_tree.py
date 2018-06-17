@@ -3,7 +3,6 @@ import multiprocessing
 import json
 import sys
 
-from concurrent.futures import ThreadPoolExecutor
 from copy import copy
 from decisiontree.id3_algorithm import (calculate_total_entropy,
                                         calculate_information_gain)
@@ -108,6 +107,11 @@ def save_json_to_file(id3_tree, file_path):
 
 def read_id3_tree():
     with open(TREE_FILE_NAME, 'r') as id3_file:
+        return json.loads(id3_file.read())
+
+
+def read_id3_tree_pruned():
+    with open(TREE_PRUNED_FILE_NAME, 'r') as id3_file:
         return json.loads(id3_file.read())
 
 
@@ -240,7 +244,8 @@ def _get_lines_that_match_key(headers, tree_key, file_data):
 def convert_to_if_then(id3_tree, file_data, headers, tabs_prefix=0):
     tabs_before = ' ' * TABS_PER_LINE * tabs_prefix
     if isinstance(id3_tree, str):
-        return tabs_before + _create_if_then_tree_key(id3_tree, then_nodes=True)
+        return (tabs_before
+                + _create_if_then_tree_key(id3_tree, then_nodes=True))
     if_then = ''
     keys_list = list(id3_tree.keys())
     accuracy_dict = {}
@@ -253,7 +258,8 @@ def convert_to_if_then(id3_tree, file_data, headers, tabs_prefix=0):
         if_then += tabs_before + _create_if_then_tree_key(tree_key)
         subtree_data = _get_lines_that_match_key(headers, tree_key, file_data)
         subif = convert_to_if_then(
-            id3_tree[tree_key], subtree_data, headers, tabs_prefix=tabs_prefix + 1
+            id3_tree[tree_key], subtree_data,
+            headers, tabs_prefix=tabs_prefix + 1
         )
         if_then += subif
     return if_then
@@ -262,6 +268,22 @@ def convert_to_if_then(id3_tree, file_data, headers, tabs_prefix=0):
 def save_ifthen_to_file(ifthen):
     with open(IFTHEN_FILE_PATH, 'w') as ifthen_file_path:
         ifthen_file_path.write(ifthen)
+
+
+def print_accuracy(id3_tree, headers, file_data):
+    success = 0
+    errors = 0
+    for line in file_data:
+        tested_data = test_data(id3_tree, headers, line)
+        if tested_data:
+            success += 1
+        else:
+            errors += 1
+    print('Total {} Sucessos {} Erros {} Accuracy {}'.format(
+        success+errors, success, errors,
+        calculate_accuracy(id3_tree, file_data, headers)
+    ))
+
 
 def run(
     action, input_file_headers, input_file_data,
@@ -281,20 +303,11 @@ def run(
 
     if action == 'test':
         id3_tree = read_id3_tree()
-        success = 0
-        errors = 0
-        for line in file_data:
-            tested_data = test_data(id3_tree, headers, line)
-            if tested_data:
-                success += 1
-            else:
-                errors += 1
-        print('Total {} Sucessos {} Erros {}'.format(
-            success+errors, success, errors)
-        )
-        print(calculate_accuracy(
-                    id3_tree, file_data, headers
-                ))
+        print_accuracy(id3_tree, headers, file_data)
+
+    if action == 'test_prune':
+        id3_tree = read_id3_tree_pruned()
+        print_accuracy(id3_tree, headers, file_data)
 
     if action == 'validation':
         folds = separate_folds(file_data, fold_number)
@@ -313,17 +326,7 @@ def run(
             id3_tree = train_decision_tree(
                 headers, training_fold, total_entropy_adult
             )
-            success = 0
-            errors = 0
-            for line in fold_aux:
-                tested_data = test_data(id3_tree, headers, line)
-                if tested_data:
-                    success += 1
-                else:
-                    errors += 1
-            print('Total {} Sucessos {} Erros {}'.format(
-                success+errors, success, errors)
-            )
+            print_accuracy(id3_tree, headers, fold_aux)
 
             folds.insert(i, fold_aux)
 
@@ -331,6 +334,7 @@ def run(
         id3_tree = read_id3_tree()
         ifthen = convert_to_if_then(id3_tree, file_data, headers)
         save_ifthen_to_file(ifthen)
+
     if action == 'prune':
         total_entropy_adult = calculate_total_entropy(
             file_data, POSITIVE_DECISION, NEGATIVE_DECISION,
